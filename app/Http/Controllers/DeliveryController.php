@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\delivery ;
-
+use App\Imports\DeliveryImport;
+use Maatwebsite\Excel\Facades\Excel;
 class DeliveryController extends Controller
 {
     //
@@ -27,5 +28,17 @@ class DeliveryController extends Controller
         delivery::create($validatedData);
         return redirect()->route('product.index')->with('msg', 'Delivery created successfully!');
     }
+
+    public function uploadDelivery(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls',
+    ]);
+
+    Excel::import(new DeliveryImport, $request->file('file'));
+
+    return back()->with('success', 'Data delivery berhasil diupload dan stok diperbarui.');
+}
+
 
 }

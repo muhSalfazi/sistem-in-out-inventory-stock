@@ -134,8 +134,8 @@
                             <th scope="col" class="text-center">Job No</th>
                             <th scope="col" class="text-center">Line</th>
                             <th scope="col" class="text-center">Qty</th>
-                            <th scope="col" class="text-center">Waktu</th>
-                            <th scope="col" class="text-center">User</th>
+                            {{-- <th scope="col" class="text-center">Waktu</th> --}}
+                            {{-- <th scope="col" class="text-center">User</th> --}}
                             <th scope="col" class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -151,8 +151,8 @@
                                 <td class="text-center">{{ $product->job_no  ?? 'N/A'}}</td>   
                                 <td class="text-center">{{ $product->line ?? 'N/A' }}</td>   
                                 <td class="text-center">{{ $product->Qty ?? 'N/A' }}</td>   
-                                <td class="text-center">{{ $product->Waktu ?? 'N/A' }}</td>   
-                                <td class="text-center">{{ $product->user  ?? 'N/A'}}</td>   
+                                {{-- <td class="text-center">{{ $product->Waktu ?? 'N/A' }}</td>    --}}
+                                {{-- <td class="text-center">{{ $product->user  ?? 'N/A'}}</td>    --}}
 
                                 <td class="text-center">
                                     <!-- Edit Button -->

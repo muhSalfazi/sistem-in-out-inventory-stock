@@ -18,6 +18,7 @@ return new class extends Migration
             // $table->unsignedBigInteger('id_delivery')->nullable();
             $table->string('Part_name')->nullable();
             $table->string('Part_number')->nullable();
+            $table->string('inventory_id');
             $table->integer('min')->nullable();
             $table->integer('max')->nullable();
             $table->integer('act_stock')->nullable();

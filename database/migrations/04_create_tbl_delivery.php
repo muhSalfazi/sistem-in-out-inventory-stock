@@ -14,14 +14,11 @@ return new class extends Migration
         Schema::create('tbl_delivery', function (Blueprint $table) {
             $table->id();
             $table->integer('manifest_no');
-            $table->string('job_no_custumer');
-            $table->string('inventory_id_kbi');
+            $table->string('job_no_customer');
+            $table->string('inventory_id_kbi')->nullable();
             $table->dateTime('scandate')->nullable();
             $table->string('user')->nullable();
             $table->timestamps();
-
-
-
         });
     }
 

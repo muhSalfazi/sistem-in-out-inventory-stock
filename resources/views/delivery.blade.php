@@ -100,7 +100,7 @@
 
                     {{-- modal import --}}
                     <div class="modal-body">
-                        <form action="{{ route('product.import') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('delivery.import') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
                                 <label for="file" class="form-label">Upload Excel File</label>
@@ -126,10 +126,9 @@
                     <thead>
                         <tr>
                             <th scope="col" class="text-center">NO</th>
-                            <th scope="col" class="text-center">ID KBI</th>
-                            <th scope="col" class="text-center">Part Number</th>
-                            <th scope="col" class="text-center">Part Name</th>
-                            <th scope="col" class="text-center">Wo No</th>
+                            <th scope="col" class="text-center">Manifest No</th>
+                            <th scope="col" class="text-center">Job No Customer</th>
+                            <th scope="col" class="text-center">Inventory ID KBI</th>
                             <th scope="col" class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -139,8 +138,7 @@
                                 <td class="text-center">{{ $loop->iteration ??'N/A'}}</td>
                                 <td class="text-center">{{ $delivery->manifest_no ??'N/A'}}</td>
                                 <td class="text-center">{{ $delivery->job_no_customer?? 'N/A' }}</td>
-                                <td class="text-center">{{ $delivery->scandate ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $delivery->user  ?? 'N/A'}}</td>
+                                <td class="text-center">{{ $delivery->inventory_id_kbi ?? 'N/A' }}</td>
 
                                 <td class="text-center">
                                     <!-- Edit Button -->
@@ -217,7 +215,10 @@
 
 @push('scripts')
 <script>
-   
-</script>
+    $(document).ready(function() {
+        $('.datatable').DataTable();
+    });
+    </script>
+    
 
 @endpush

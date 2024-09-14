@@ -43,8 +43,8 @@ Route::post('/prdoduct/import', [ProductController::class, 'importExcelProduct']
 
 // Rute untuk menampilkan daftar delivery
 Route::get('/delivery', [DeliveryController::class, 'index'])->name('delivery.index');
-Route::post('/productstore', [ProductController::class, 'store'])->name('product.store');
-Route::put('/product/{id}', [ProductController::class, 'update'])->name('product.update');
-Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
-Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
-Route::post('/prdoduct/import', [ProductController::class, 'importExcelProduct'])->name('product.import');
+// Route::post('/productstore', [ProductController::class, 'store'])->name('product.store');
+// Route::put('/product/{id}', [ProductController::class, 'update'])->name('product.update');
+// Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
+// Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
+Route::post('/delivery/import', [DeliveryController::class, 'uploadDelivery'])->name('delivery.import');

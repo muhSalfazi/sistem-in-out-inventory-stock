@@ -93,6 +93,7 @@
                             <th scope="col" class="text-center">ID KBI</th>
                             <th scope="col" class="text-center">Part Name</th>
                             <th scope="col" class="text-center">Part Number</th>
+                            <th scope="col" class="text-center">Inventory Id</th>
                             <th scope="col" class="text-center">min</th>
                             <th scope="col" class="text-center">max</th>
                             <th scope="col" class="text-center">act stock</th>
@@ -107,6 +108,7 @@
                                 <td class="text-center">{{ $stock->Id_kbi ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $stock->Part_name ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $stock->Part_number ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $stock->inventory_id ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $stock->min ?? 'N/A'}}</td>
                                 <td class="text-center">{{ $stock->max  ?? 'N/A'}}</td>
                                 <td class="text-center">{{ $stock->act_stock ?? 'N/A' }}</td>

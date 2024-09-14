@@ -18,7 +18,8 @@ class Stock extends Model
         'min',
         'max',
         'act_stock',
-        'id_produksi'
+        'id_produksi',
+        'inventory_id'
     ];
 
     // Relasi ke Produksi (Many to One)
