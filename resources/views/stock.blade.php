@@ -74,10 +74,10 @@
                     <div class="d-flex gap-2 justify-content-md-end">
                         <div>
                             <!-- Button trigger modal -->
-                            <button class="btn btn-custom py-2 mt-1" data-bs-toggle="modal"
+                            {{-- <button class="btn btn-custom py-2 mt-1" data-bs-toggle="modal"
                                 data-bs-target="#createStockModal">
                                 <i class="ti ti-plus"></i> Created Stock
-                            </button>
+                            </button> --}}
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                         <tr>
                             <th scope="col" class="text-center">NO</th>
                             <th scope="col" class="text-center">ID KBI</th>
-                            <th scope="col" class="text-center">Part Name</th>
+                            {{-- <th scope="col" class="text-center">Part Name</th> --}}
                             <th scope="col" class="text-center">Part Number</th>
                             <th scope="col" class="text-center">Inventory Id</th>
                             <th scope="col" class="text-center">min</th>
@@ -106,13 +106,23 @@
                             <tr>
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td class="text-center">{{ $stock->Id_kbi ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $stock->Part_name ?? 'N/A' }}</td>
+                                {{-- <td class="text-center">{{ $stock->Part_name ?? 'N/A' }}</td> --}}
                                 <td class="text-center">{{ $stock->Part_number ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $stock->inventory_id ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $stock->min ?? 'N/A'}}</td>
                                 <td class="text-center">{{ $stock->max  ?? 'N/A'}}</td>
                                 <td class="text-center">{{ $stock->act_stock ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $stock->status ?? 'N/A' }}</td>
+                                <td class="text-center">
+                                    @if($stock->status == 'danger')
+                                        <span class="badge bg-danger">Danger</span>
+                                    @elseif($stock->status == 'okey')
+                                        <span class="badge bg-success">Okey</span>
+                                    @elseif($stock->status == 'over')
+                                        <span class="badge bg-warning">Over</span>
+                                    @else
+                                        <span class="badge bg-secondary">Unknown</span>
+                                    @endif
+                                </td>
 
                                 <td class="text-center">
                                     <!-- Edit Button -->

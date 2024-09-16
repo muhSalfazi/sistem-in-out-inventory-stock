@@ -128,10 +128,10 @@
                             <th scope="col" class="text-center">NO</th>
                             <th scope="col" class="text-center">ID KBI</th>
                             <th scope="col" class="text-center">Part Number</th>
-                            <th scope="col" class="text-center">Part Name</th>
+                            {{-- <th scope="col" class="text-center">Part Name</th> --}}
                             <th scope="col" class="text-center">Wo No</th>
                             <th scope="col" class="text-center">Inventory ID</th>
-                            <th scope="col" class="text-center">Job No</th>
+                            {{-- <th scope="col" class="text-center">Job No</th> --}}
                             <th scope="col" class="text-center">Line</th>
                             <th scope="col" class="text-center">Qty</th>
                             {{-- <th scope="col" class="text-center">Waktu</th> --}}
@@ -142,26 +142,25 @@
                     <tbody>
                         @foreach ($products as $product)
                             <tr>
-                                <td class="text-center">{{ $loop->iteration ??'N/A'}}</td>
-                                <td class="text-center">{{ $product->Id_kbi ??'N/A'}}</td>
+                                <td class="text-center">{{ $loop->iteration ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $product->Id_kbi ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $product->Part_number ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $product->Part_name ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $product->Wo_no  ?? 'N/A'}}</td>
+                                {{-- <td class="text-center">{{ $product->Part_name ?? 'N/A' }}</td> --}}
+                                <td class="text-center">{{ $product->Wo_no ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $product->inventory_id ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $product->job_no  ?? 'N/A'}}</td>   
+                                {{-- <td class="text-center">{{ $product->job_no ?? 'N/A' }}</td>    --}}
                                 <td class="text-center">{{ $product->line ?? 'N/A' }}</td>   
                                 <td class="text-center">{{ $product->Qty ?? 'N/A' }}</td>   
-                                {{-- <td class="text-center">{{ $product->Waktu ?? 'N/A' }}</td>    --}}
-                                {{-- <td class="text-center">{{ $product->user  ?? 'N/A'}}</td>    --}}
-
+                                {{-- <td class="text-center">{{ $product->Waktu ?? 'N/A' }}</td> --}}
+                                {{-- <td class="text-center">{{ $product->user ?? 'N/A' }}</td> --}}
                                 <td class="text-center">
                                     <!-- Edit Button -->
-                                    <button class="btn btn-custom btn-sm mt-1 edit-part" "
-                                       data-bs-toggle="modal"
+                                    <button class="btn btn-custom btn-sm mt-1 edit-part"
+                                        data-bs-toggle="modal"
                                         data-bs-target="#editStockModal">
                                         <i class="bi bi-pen">Edit</i>
                                     </button>
-
+            
                                     <!-- Delete Button -->
                                     <form action="{{ route('product.destroy', $product->id) }}" method="post"
                                         class="d-inline">
@@ -169,7 +168,8 @@
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-custom btn-sm btn-danger mt-1"
                                             onclick="return confirm('Apakah Anda yakin ingin menghapus Product ini?')">  
-                                             <i class="ti ti-trash">Delete</i></button>
+                                             <i class="ti ti-trash">Delete</i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -177,6 +177,25 @@
                     </tbody>
                 </table>
             </div>
+            
+            <!-- DataTables JavaScript and CSS -->
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+            
+            <script>
+                $(document).ready(function() {
+                    $('.datatable').DataTable({
+                        // Optional configurations for DataTables
+                        paging: true,
+                        searching: true,
+                        ordering: true,
+                        info: true,
+                        lengthChange: false
+                    });
+                });
+            </script>
+            
 
             <!-- Modal Create Product -->
             <div class="modal fade" id="createStockModal" tabindex="-1" aria-labelledby="createPartModalLabel"

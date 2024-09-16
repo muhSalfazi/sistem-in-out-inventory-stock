@@ -120,50 +120,68 @@
                     </div>
                 </div>
             </div>
-            <!-- Data Table -->
-            <div class="table-responsive">
-                <table class="table datatable">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="text-center">NO</th>
-                            <th scope="col" class="text-center">Manifest No</th>
-                            <th scope="col" class="text-center">Job No Customer</th>
-                            <th scope="col" class="text-center">Inventory ID KBI</th>
-                            <th scope="col" class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($deliveries as $delivery)
-                            <tr>
-                                <td class="text-center">{{ $loop->iteration ??'N/A'}}</td>
-                                <td class="text-center">{{ $delivery->manifest_no ??'N/A'}}</td>
-                                <td class="text-center">{{ $delivery->job_no_customer?? 'N/A' }}</td>
-                                <td class="text-center">{{ $delivery->inventory_id_kbi ?? 'N/A' }}</td>
+           <!-- Data Table -->
+<div class="table-responsive">
+    <table class="table datatable">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center">NO</th>
+                <th scope="col" class="text-center">Manifest No</th>
+                <th scope="col" class="text-center">Job No Customer</th>
+                <th scope="col" class="text-center">Inventory ID KBI</th>
+                <th scope="col" class="text-center">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($deliveries as $delivery)
+                <tr>
+                    <td class="text-center">{{ $loop->iteration ?? 'N/A' }}</td>
+                    <td class="text-center">{{ $delivery->manifest_no ?? 'N/A' }}</td>
+                    <td class="text-center">{{ $delivery->job_no_customer ?? 'N/A' }}</td>
+                    <td class="text-center">{{ $delivery->inventory_id_kbi ?? 'N/A' }}</td>
+                    <td class="text-center">
+                        <!-- Edit Button -->
+                        <button class="btn btn-custom btn-sm mt-1 edit-part"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editStockModal">
+                            <i class="bi bi-pen">Edit</i>
+                        </button>
 
-                                <td class="text-center">
-                                    <!-- Edit Button -->
-                                    <button class="btn btn-custom btn-sm mt-1 edit-part" "
-                                       data-bs-toggle="modal"
-                                        data-bs-target="#editStockModal">
-                                        <i class="bi bi-pen">Edit</i>
-                                    </button>
+                        <!-- Delete Button -->
+                        <form action="{{ route('product.destroy', $delivery->id) }}" method="post" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-custom btn-sm btn-danger mt-1"
+                                onclick="return confirm('Apakah Anda yakin ingin menghapus Product ini?')">
+                                <i class="ti ti-trash">Delete</i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 
-                                    <!-- Delete Button -->
-                                    <form action="{{ route('product.destroy', $delivery->id) }}" method="post"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-custom btn-sm btn-danger mt-1"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus Product ini?')">  
-                                             <i class="ti ti-trash">Delete</i></button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+<!-- DataTables JavaScript and CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 
+<script>
+    $(document).ready(function() {
+        $('.datatable').DataTable({
+            // Optional configurations for DataTables
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            lengthChange: false
+        });
+    });
+</script>
+
+             
             <!-- Modal Create Product -->
             <div class="modal fade" id="createStockModal" tabindex="-1" aria-labelledby="createPartModalLabel"
                 aria-hidden="true">

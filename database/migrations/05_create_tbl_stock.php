@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('min')->nullable();
             $table->integer('max')->nullable();
             $table->integer('act_stock')->nullable();
-            $table->enum('status',['habis','okey','over'])->default('okey')->nullable( );
+            $table->enum('status',['danger','okey','over'])->nullable( );
 
 
             // fk
@@ -32,10 +32,6 @@ return new class extends Migration
                 ->onDelete('cascade');
 
 
-            // $table->foreign('id_delivery')
-            //     ->references('id')
-            //     ->on('tbl_delivery')
-            //     ->onDelete('cascade');
 
             // timestamps
             $table->timestamps();

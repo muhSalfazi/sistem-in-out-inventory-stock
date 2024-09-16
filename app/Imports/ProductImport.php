@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Imports;
 
 use App\Models\Produksi;
@@ -28,6 +27,16 @@ class ProductImport implements ToModel, WithHeadingRow
             $stock = Stock::where('id_produksi', $produksi->id)->first();
             if ($stock) {
                 $stock->act_stock += $row['qty'];
+
+                // Tentukan status berdasarkan nilai act_stock
+                if ($stock->act_stock > 100) {
+                    $stock->status = 'over';
+                } elseif ($stock->act_stock >= 50) {
+                    $stock->status = 'okey';
+                } else {
+                    $stock->status = 'danger';
+                }
+
                 $stock->save();
             }
         } else {
@@ -41,17 +50,27 @@ class ProductImport implements ToModel, WithHeadingRow
                 'inventory_id' => $row['inventory_id'],
                 'line' => $row['line'],
                 'waktu' => now(),
-                'user' =>$row['user'],
+                'user' => $row['user'],
             ]);
+
+            $actStock = $row['qty'];
+            $status = 'danger'; // Default status for stock < 50
+
+            // Tentukan status berdasarkan nilai act_stock
+            if ($actStock > 100) {
+                $status = 'over';
+            } elseif ($actStock >= 50) {
+                $status = 'okey';
+            }
 
             Stock::create([
                 'Id_kbi' => $row['id_kbi'],
                 'id_produksi' => $produksi->id,
                 'Part_name' => $row['part_name'],
                 'Part_number' => $row['part_no'],
-                'act_stock' => $row['qty'],
+                'act_stock' => $actStock,
                 'inventory_id' => $row['inventory_id'],
-                'status' => 'okey',
+                'status' => $status,
             ]);
         }
     }
