@@ -28,6 +28,15 @@ class ProductImport implements ToModel, WithHeadingRow
             if ($stock) {
                 $stock->act_stock += $row['qty'];
 
+                // Tentukan status berdasarkan nilai act_stock
+                if ($stock->act_stock > 100) {
+                    $stock->status = 'over';
+                } elseif ($stock->act_stock >= 50) {
+                    $stock->status = 'okey';
+                } else {
+                    $stock->status = 'danger';
+                }
+
                 $stock->save();
             }
         } else {
@@ -45,14 +54,8 @@ class ProductImport implements ToModel, WithHeadingRow
             ]);
 
             $actStock = $row['qty'];
-            $status = 'danger'; // Default status for stock < 50
 
             // Tentukan status berdasarkan nilai act_stock
-            if ($actStock > 100) {
-                $status = 'over';
-            } elseif ($actStock >=10) {
-                $status = 'okey';
-            }
 
             Stock::create([
                 'Id_kbi' => $row['id_kbi'],

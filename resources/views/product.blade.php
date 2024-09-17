@@ -74,54 +74,46 @@
                     <div class="d-flex gap-2 justify-content-md-end">
                         <div>
                             <!-- Button trigger modal -->
-                            <button class="btn btn-custom py-2 mt-1" data-bs-toggle="modal"
-                                data-bs-target="#createStockModal">
-                                <i class="ti ti-plus"></i> Created Product
+                            <button class="btn btn-excel py-2 mt-1" data-bs-toggle="modal" data-bs-target="#smallModal">
+                                <i class="bi-file-earmark-spreadsheet-fill"></i> Import Excel
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            {{-- <div class="row mb-2"> --}}
-            <div class="col-6 col-lg-2">
-                <div class="d-flex gap-2 justify-content-md-end">
-                    <div>
-                        <button class="btn btn-excel py-2 mt-1" data-bs-toggle="modal" data-bs-target="#smallModal">
-                            <i class="bi-file-earmark-spreadsheet-fill"></i> Import Excel
-                        </button>
+            <div class="d-flex gap-2 justify-content-md-end">
+                <div>
 
-                        <div class="modal fade" id="smallModal" tabindex="-1">
-                            <div class="modal-dialog modal-sm">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Import Excel</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-
-                                    {{-- modal import --}}
-                                    <div class="modal-body">
-                                        <form action="{{ route('product.import') }}" method="POST"
-                                            enctype="multipart/form-data">
-                                            @csrf
-                                            <div class="mb-3">
-                                                <label for="file" class="form-label">Upload Excel File</label>
-                                                <input type="file" class="form-control" id="file" name="file"
-                                                    accept=".xlsx,.xls,.csv" required>
-                                            </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Import</button>
-                                    </div>
-                                    </form>
+                    <div class="modal fade" id="smallModal" tabindex="-1">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Import Excel</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
+
+                                {{-- modal import --}}
+                                <div class="modal-body">
+                                    <form action="{{ route('product.import') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="mb-3">
+                                            <label for="file" class="form-label">Upload Excel File</label>
+                                            <input type="file" class="form-control" id="file" name="file"
+                                                accept=".xlsx,.xls,.csv" required>
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Import</button>
+                                </div>
+                                </form>
                             </div>
                         </div>
-                        <!-- End Small Modal-->
-
                     </div>
+                    <!-- End Small Modal-->
+
                 </div>
             </div>
             <!-- Data Table -->
@@ -132,6 +124,7 @@
                             <th scope="col" class="text-center">NO</th>
                             <th scope="col" class="text-center">ID KBI</th>
                             <th scope="col" class="text-center">Part Number</th>
+                            <th scope="col" class="text-center">Part Name</th>
                             <th scope="col" class="text-center">Wo No</th>
                             <th scope="col" class="text-center">Inventory ID</th>
                             <th scope="col" class="text-center">Line</th>
@@ -145,26 +138,27 @@
                                 <td class="text-center">{{ $loop->iteration ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $product->Id_kbi ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $product->Part_number ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $product->Part_name ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $product->Wo_no ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $product->inventory_id ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $product->line ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $product->Qty ?? 'N/A' }}</td>
                                 <td class="text-center">
                                     <!-- Edit Button -->
-                                    <button class="btn btn-custom btn-sm mt-1" data-bs-toggle="modal" 
-                                    data-bs-target="#editStockModal{{ $product->id }}">
-                                    <i class="bi bi-pen"> Edit</i>
-                                </button>
-                                    <!-- Delete Button -->
-                                    <form action="{{ route('product.destroy', $product->id) }}" method="post"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-custom btn-sm btn-danger mt-1"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus Product ini?')">
-                                            <i class="ti ti-trash">Delete</i>
-                                        </button>
-                                    </form>
+                                    <button class="btn btn-custom btn-sm mt-1" data-bs-toggle="modal"
+                                        data-bs-target="#editStockModal{{ $product->id }}">
+                                        <i class="bi bi-pen"> Edit</i>
+
+                                        <!-- Delete Button -->
+                                        <form action="{{ route('product.destroy', $product->id) }}" method="post"
+                                            class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-custom btn-sm btn-danger mt-1"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus Product ini?')">
+                                                <i class="ti ti-trash">Delete</i>
+                                            </button>
+                                        </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -237,57 +231,69 @@
 
 
             <!-- Modal Edit Product -->
-                       <!-- Modal Edit Product -->
-                       @foreach ($products as $product)
-                       <div class="modal fade" id="editStockModal{{ $product->id }}" tabindex="-1" aria-labelledby="editStockModalLabel{{ $product->id }}" aria-hidden="true">
-                           <div class="modal-dialog">
-                               <div class="modal-content">
-                                   <form action="{{ route('product.update', $product->id) }}" method="post">
-                                       @csrf
-                                       @method('PUT')
-                                       <div class="modal-header">
-                                           <h5 class="modal-title" id="editStockModalLabel{{ $product->id }}">Edit Product</h5>
-                                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                       </div>
-                                       <div class="modal-body">
-                                           <input type="hidden" id="edit_id" name="id" value="{{ $product->id }}">
-           
-                                           <div class="mb-3">
-                                               <label for="edit_Id_kbi{{ $product->id }}" class="form-label">ID KBI</label>
-                                               <input type="text" class="form-control" id="edit_Id_kbi{{ $product->id }}" name="Id_kbi" value="{{ $product->Id_kbi }}">
-                                           </div>
-           
-                                           <div class="mb-3">
-                                               <label for="edit_Part_name{{ $product->id }}" class="form-label">Part Name</label>
-                                               <input type="text" class="form-control" id="edit_Part_name{{ $product->id }}" name="Part_name" value="{{ $product->Part_name }}">
-                                           </div>
-           
-                                           <div class="mb-3">
-                                               <label for="edit_Part_number{{ $product->id }}" class="form-label">Part Number</label>
-                                               <input type="text" class="form-control" id="edit_Part_number{{ $product->id }}" name="Part_number" value="{{ $product->Part_number }}">
-                                           </div>
-           
-                                           <div class="mb-3">
-                                               <label for="edit_Qty{{ $product->id }}" class="form-label">Quantity</label>
-                                               <input type="number" class="form-control" id="edit_Qty{{ $product->id }}" name="Qty" value="{{ $product->Qty }}">
-                                           </div>
-                                       </div>
-                                       <div class="modal-footer">
-                                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                           <button type="submit" class="btn btn-custom">Save changes</button>
-                                       </div>
-                                   </form>
-                               </div>
-                           </div>
-                       </div>
-                       @endforeach
-                   </div>
-               </div>
-           </div>
-           
-           @endsection
-           
+            @foreach ($products as $product)
+                <div class="modal fade" id="editStockModal{{ $product->id }}" tabindex="-1"
+                    aria-labelledby="editStockModalLabel{{ $product->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="{{ route('product.update', $product->id) }}" method="post">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editStockModalLabel{{ $product->id }}">Edit Product</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="edit_id" name="id" value="{{ $product->id }}">
 
-    @push('scripts')
-        <script></script>
-    @endpush
+                                    <div class="mb-3">
+                                        <label for="edit_Id_kbi{{ $product->id }}" class="form-label">ID KBI</label>
+                                        <input type="text" class="form-control" id="edit_Id_kbi{{ $product->id }}"
+                                            name="Id_kbi" value="{{ $product->Id_kbi }}">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="edit_Part_name{{ $product->id }}" class="form-label">Part
+                                            Name</label>
+                                        <input type="text" class="form-control"
+                                            id="edit_Part_name{{ $product->id }}" name="Part_name"
+                                            value="{{ $product->Part_name }}">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="edit_Part_number{{ $product->id }}" class="form-label">Part
+                                            Number</label>
+                                        <input type="text" class="form-control"
+                                            id="edit_Part_number{{ $product->id }}" name="Part_number"
+                                            value="{{ $product->Part_number }}">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="edit_Qty{{ $product->id }}" class="form-label">Quantity</label>
+                                        <input type="number" class="form-control" id="edit_Qty{{ $product->id }}"
+                                            name="Qty" value="{{ $product->Qty }}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-custom">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+
+
+
+    </div>
+
+@endsection
+
+@push('scripts')
+    <script></script>
+@endpush

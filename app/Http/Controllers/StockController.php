@@ -16,22 +16,6 @@ class StockController extends Controller
         return view('stock', ['stocks' => $stocks]);
     }
 
-    // method store as a stock
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'Inv_id' => 'required|integer',
-            'Part_name' => 'required|max:255',
-            'Part_number' => 'required|string|max:255',
-            'min' => 'required|integer',
-            'max' => 'required|integer',
-            'act_stock' => 'required|integer',
-        ]);
-
-        Stock::create($validatedData);
-
-        return redirect()->route('stock.index')->with('msg', 'stock created successfully!');
-    }
 
     // method update as a stock
     public function update(Request $request, $id)
@@ -93,7 +77,6 @@ class StockController extends Controller
     }
 
 
-    // method import excel 
 
   
 

@@ -4,16 +4,6 @@
 
 <!-- Custom CSS -->
 <style>
-    .btn-custom {
-        background: linear-gradient(90deg, rgba(58, 123, 213, 1) 0%, rgba(0, 212, 255, 1) 100%);
-        border: none;
-        color: white;
-        font-weight: bold;
-    }
-
-    .btn-custom:hover {
-        background: linear-gradient(90deg, rgba(0, 212, 255, 1) 0%, rgba(58, 123, 213, 1) 100%);
-    }
 
     .btn-excel {
         background: linear-gradient(90deg, rgb(12, 158, 31) 0%, rgb(53, 252, 106) 100%);
@@ -100,9 +90,9 @@
                     <thead>
                         <tr>
                             <th scope="col" class="text-center">NO</th>
-                            <th scope="col" class="text-center">ID KBI</th>
-                            <th scope="col" class="text-center">Part Number</th>
                             <th scope="col" class="text-center">Inventory Id</th>
+                            <th scope="col" class="text-center">Part Number</th>
+                            <th scope="col" class="text-center">Part Name</th>
                             <th scope="col" class="text-center">min</th>
                             <th scope="col" class="text-center">max</th>
                             <th scope="col" class="text-center">act stock</th>
@@ -114,9 +104,9 @@
                         @foreach ($stocks as $stock)
                             <tr>
                                 <td class="text-center">{{ $loop->iteration }}</td>
-                                <td class="text-center">{{ $stock->Id_kbi ?? 'N/A' }}</td>
-                                <td class="text-center">{{ $stock->Part_number ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $stock->inventory_id ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $stock->Part_number ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $stock->Part_name ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $stock->min ?? 'N/A'}}</td>
                                 <td class="text-center">{{ $stock->max  ?? 'N/A'}}</td>
                                 <td class="text-center">{{ $stock->act_stock ?? 'N/A' }}</td>
@@ -134,11 +124,11 @@
 
                                 <td class="text-center">
                                     <!-- Edit Button -->
-                                    <button class="btn btn-custom btn-sm mt-1 edit-part" data-id="{{ $stock->id }}"
+                                    {{-- <button class="btn btn-custom btn-sm mt-1 edit-part" data-id="{{ $stock->id }}"
                                        data-bs-toggle="modal"
                                         data-bs-target="#editStockModal">
                                         <i class="bi bi-pen">Edit</i>
-                                    </button>
+                                    </button> --}}
 
                                     <!-- Delete Button -->
                                     <form action="{{ route('stock.destroy', $stock->id) }}" method="post"
@@ -157,45 +147,6 @@
 
 
 
-            <!-- Modal Edit Part -->
-            @foreach ($stocks as $stock)
-            <div class="modal fade" id="editStockModal" tabindex="-1" aria-labelledby="editStockModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        {{-- @foreach ($stocks as $stock) --}}
-                            <form action="{{ route('stock.update',$stock->id) }}" id="editPartForm" method="post">
-                                @csrf
-                                @method('PUT')
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="editStockModalLabel">Edit Part</h5>
-                                    <button type="button" class="btn-close btn-custom" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <input type="hidden" id="edit_part_id" name="id">
-
-                                    <div class="mb-3">
-                                        <label for="edit_min" class="form-label">Min</label>
-                                        <input type="number" class="form-control" id="edit_Qty" name="min"
-                                            placeholder="silahkan input min">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="edit_max" class="form-label">Max</label>
-                                        <input type="number" class="form-control" id="edit_Qty" name="max"
-                                            placeholder="silahkan input max">
-                                    </div>
-                                    
-                                </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-custom">Save changes</button>
-                    </div>
-                    </form>
-                </div>
-            </div>
-            @endforeach
 
 
 

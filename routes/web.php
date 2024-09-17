@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DeliveryController;
@@ -22,12 +22,9 @@ use App\Http\Controllers\DeliveryController;
 Route::get('/', [LoginController::class, 'showLogin'])->name('login'); 
 Route::post('/login', [LoginController::class, 'login'])->name('postlogin');
 
-// dashboard
-route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
 
 // Rute untuk menampilkan daftar stock
 Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
-Route::post('/stockstore', [StockController::class, 'store'])->name('stock.store');
 Route::put('/stock/{id}', [StockController::class, 'update'])->name('stock.update');
 Route::delete('/stock/{id}', [StockController::class, 'destroy'])->name('stock.destroy');
 // Route::post('/stock/import', [StockController::class, 'importExcel'])->name('stock.import');
@@ -48,3 +45,11 @@ Route::get('/delivery', [DeliveryController::class, 'index'])->name('delivery.in
 // Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
 // Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
 Route::post('/delivery/import', [DeliveryController::class, 'uploadDelivery'])->name('delivery.import');
+
+
+// planning
+Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
+Route::post('/planning/store', [PlanningController::class, 'store'])->name('planning.store');
+Route::put('/planning/update/{id}', [PlanningController::class, 'update'])->name('planning.update');
+Route::delete('/planning/delete/{id}', [PlanningController::class, 'destroy'])->name('planning.destroy');
+Route::post('/planning/import', [PlanningController::class, 'import'])->name('planning.import');

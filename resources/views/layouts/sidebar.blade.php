@@ -45,6 +45,14 @@
             <span class="hide-menu">Delivery</span>
           </a>
         </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="{{ route('planning.index') }}" aria-expanded="false">
+            <span>
+              <i class="bi bi-bar-chart-line-fill"></i>
+            </span>
+            <span class="hide-menu">Planning</span>
+          </a>
+        </li>
         <li class="nav-small-cap">
           <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
           <span class="hide-menu">AUTH</span>
