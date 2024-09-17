@@ -28,15 +28,6 @@ class ProductImport implements ToModel, WithHeadingRow
             if ($stock) {
                 $stock->act_stock += $row['qty'];
 
-                // Tentukan status berdasarkan nilai act_stock
-                if ($stock->act_stock > 100) {
-                    $stock->status = 'over';
-                } elseif ($stock->act_stock >= 50) {
-                    $stock->status = 'okey';
-                } else {
-                    $stock->status = 'danger';
-                }
-
                 $stock->save();
             }
         } else {
@@ -59,7 +50,7 @@ class ProductImport implements ToModel, WithHeadingRow
             // Tentukan status berdasarkan nilai act_stock
             if ($actStock > 100) {
                 $status = 'over';
-            } elseif ($actStock >= 50) {
+            } elseif ($actStock >=10) {
                 $status = 'okey';
             }
 
@@ -70,7 +61,7 @@ class ProductImport implements ToModel, WithHeadingRow
                 'Part_number' => $row['part_no'],
                 'act_stock' => $actStock,
                 'inventory_id' => $row['inventory_id'],
-                'status' => $status,
+                'status' => null,
             ]);
         }
     }

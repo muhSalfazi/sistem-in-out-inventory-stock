@@ -52,6 +52,16 @@ class DeliveryImport implements ToModel, WithHeadingRow
 
             // Kurangi act_stock dengan jumlah job_no_customer yang sesuai
             $stock->act_stock -= $matchingDeliveries;
+
+            // Tentukan status berdasarkan nilai act_stock
+            if ($stock->act_stock > 100) {
+                $stock->status = 'over';
+            } elseif ($stock->act_stock >= 10) {
+                $stock->status = 'okey';
+            } else {
+                $stock->status = 'danger';
+            }
+
             $stock->save();
         }
     }

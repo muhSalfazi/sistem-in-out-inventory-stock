@@ -39,19 +39,29 @@
 </style>
 
 @section('content')
-    <div class="pb-2">
-        @if (session('msg'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                {{ session('msg') }}
-            </div>
-        @elseif (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                {{ session('error') }}
-            </div>
-        @endif
+<div class="pb-2">
+    @if (session('msg'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {{ session('msg') }}
+        </div>
+    @elseif (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {{ session('error') }}
+        </div>
+    @endif
+</div>
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
+@endif
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -91,7 +101,6 @@
                         <tr>
                             <th scope="col" class="text-center">NO</th>
                             <th scope="col" class="text-center">ID KBI</th>
-                            {{-- <th scope="col" class="text-center">Part Name</th> --}}
                             <th scope="col" class="text-center">Part Number</th>
                             <th scope="col" class="text-center">Inventory Id</th>
                             <th scope="col" class="text-center">min</th>
@@ -106,7 +115,6 @@
                             <tr>
                                 <td class="text-center">{{ $loop->iteration }}</td>
                                 <td class="text-center">{{ $stock->Id_kbi ?? 'N/A' }}</td>
-                                {{-- <td class="text-center">{{ $stock->Part_name ?? 'N/A' }}</td> --}}
                                 <td class="text-center">{{ $stock->Part_number ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $stock->inventory_id ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $stock->min ?? 'N/A'}}</td>
@@ -147,62 +155,16 @@
                 </table>
             </div>
 
-            <!-- Modal Create Stock -->
-            <div class="modal fade" id="createStockModal" tabindex="-1" aria-labelledby="createPartModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form action="{{ route('stock.store') }}" method="post">
-                            @csrf
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="createPartModalLabel">Create Stock</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="InvID" class="form-label">InvID</label>
-                                    <input type="number" class="form-control" id="InvID" name="InvID" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Part_name" class="form-label">Part Name</label>
-                                    <input type="text" class="form-control" id="Part_name" name="Part_name" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Part_number" class="form-label">Part Number</label>
-                                    <input type="text" class="form-control" id="Part_number" name="Part_number"
-                                        required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="min" class="form-label">Min Quantity</label>
-                                    <input type="number" class="form-control" id="min" name="min" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="max" class="form-label">Max Quantity</label>
-                                    <input type="number" class="form-control" id="max" name="max" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="act_stock" class="form-label">Actual Stock</label>
-                                    <input type="number" class="form-control" id="act_stock" name="act_stock" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-custom">Save</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
 
 
             <!-- Modal Edit Part -->
+            @foreach ($stocks as $stock)
             <div class="modal fade" id="editStockModal" tabindex="-1" aria-labelledby="editStockModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         {{-- @foreach ($stocks as $stock) --}}
-                            <form id="editPartForm" method="post">
+                            <form action="{{ route('stock.update',$stock->id) }}" id="editPartForm" method="post">
                                 @csrf
                                 @method('PUT')
                                 <div class="modal-header">
@@ -212,24 +174,6 @@
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" id="edit_part_id" name="id">
-
-                                    <div class="mb-3">
-                                        <label for="edit_Inv_id" class="form-label">InvID</label>
-                                        <input type="number" class="form-control" id="edit_InvID" name="Inv_id"
-                                            placeholder="silahkan input InvID">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="edit_Part_name" class="form-label">Nama Part</label>
-                                        <input type="text" class="form-control" id="edit_Part_name" name="Part_name"
-                                            placeholder="silahkan input nama part">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="edit_Part_number" class="form-label">No Part</label>
-                                        <input type="text" class="form-control" id="edit_Part_number"
-                                            name="Part_number" placeholder="silahkan input part number">
-                                    </div>
 
                                     <div class="mb-3">
                                         <label for="edit_min" class="form-label">Min</label>
@@ -242,11 +186,6 @@
                                         <input type="number" class="form-control" id="edit_Qty" name="max"
                                             placeholder="silahkan input max">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="edit_actstock" class="form-label">Act Stock</label>
-                                        <input type="number" class="form-control" id="edit_max" name="max"
-                                            placeholder="silahkan input actual stock">
-                                    </div>
                                     
                                 </div>
                     <div class="modal-footer">
@@ -254,9 +193,9 @@
                         <button type="submit" class="btn btn-custom">Save changes</button>
                     </div>
                     </form>
-                    {{-- @endforeach --}}
                 </div>
             </div>
+            @endforeach
 
 
 
@@ -267,10 +206,4 @@
 @endsection
 
 @push('scripts')
-    <script>
-        document.getElementById('edit_InvID').value = this.getAttribute('data-invid');
-        document.getElementById('edit_Part_name').value = part_name;
-        document.getElementById('edit_Part_number').value = part_number;
-        document.getElementById('edit_Qty').value = qty;
-    </script>
 @endpush

@@ -36,29 +36,47 @@ class StockController extends Controller
     // method update as a stock
     public function update(Request $request, $id)
     {
+        // Validasi input dari user untuk 'min' dan 'max' saja
         $request->validate([
-            'Part_name' => 'sometimes|max:255',
-            'InvID' => 'sometimes|integer',
-            'Part_number' => 'sometimes|integer',
-            'min' => 'sometimes|integer',
-            'max' => 'sometimes|integer',
-            'act_stock' => 'sometimes|integer',
+            'min' => 'sometimes|integer|max:100|min:1',
+            'max' => 'sometimes|integer|max:100|min:1',
         ]);
-
+    
+        // Temukan data stock berdasarkan ID
         $stock = Stock::findOrFail($id);
-
-        $data = $request->only(['part_name', 'InvID', 'Part_number', 'min', 'max', 'act_stock']);
-
+    
+        // Ambil data yang hanya diisi dari request
+        $data = $request->only(['min', 'max']);
+    
+        // Hapus data yang nilainya null dari array
         foreach ($data as $key => $value) {
             if (is_null($value)) {
                 unset($data[$key]);
             }
         }
-
+    
+        // Perbarui data stock
         $stock->update($data);
-
-        return redirect()->route('donasi.index')->with('msg', 'Donasi updated successfully.')->with('error', false);
+    
+        // Setelah update, ambil nilai terbaru act_stock
+        $act_stock = $stock->act_stock;
+        $min = $stock->min;
+        $max = $stock->max;
+    
+        // Update status berdasarkan nilai akhir dari act_stock
+        if ($act_stock < $min) {
+            $stock->update(['status' => 'danger']);
+        } elseif ($act_stock >= $min && $act_stock <= $max) {
+            $stock->update(['status' => 'okey']);
+        } elseif ($act_stock > $max) {
+            $stock->update(['status' => 'over']);
+        }
+    
+        // Redirect kembali ke halaman index stock dengan pesan sukses
+        return redirect()->route('stock.index')->with('msg', 'Stock updated successfully.')->with('error', false);
     }
+    
+    
 
     // method deletes a stock
     public function destroy($id)
