@@ -11,7 +11,8 @@ class Planning extends Model
 
 protected $table = 'tbl_planning';
 
-protected $fillable = ['inventory_id', 'Part_name', 'Part_number', 'min', 'max'];
+protected $fillable = ['id_stock', 'inventory_id', 'Part_name', 'Part_number', 'min', 'max'];
+
 
 public function stock()
 {

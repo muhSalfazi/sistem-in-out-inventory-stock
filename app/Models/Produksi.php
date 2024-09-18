@@ -21,6 +21,7 @@ class Produksi extends Model
         'Qty',
         'waktu',
         'user'
+        
 
     ];
 

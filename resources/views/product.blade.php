@@ -40,8 +40,25 @@
 
 @section('content')
     <div class="pb-2">
+        @if (session('alerts'))
+            <div class="alert alert-warning alert-dismissible fade show"  role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                @foreach (session('alerts') as $alert)
+                    <p>{{ $alert }}</p>
+                @endforeach
+            </div>
+        @endif
+        @if (session('pesan'))
+            <div class="alert alert-warning alert-dismissible fade show"  role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                @foreach (session('pesan') as $pesan)
+                    <p>{{ $pesan }}</p>
+                @endforeach
+            </div>
+        @endif
+
         @if (session('msg'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show"  role="alert">
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 {{ session('msg') }}
             </div>
@@ -148,17 +165,6 @@
                                     <button class="btn btn-custom btn-sm mt-1" data-bs-toggle="modal"
                                         data-bs-target="#editStockModal{{ $product->id }}">
                                         <i class="bi bi-pen"> Edit</i>
-
-                                        <!-- Delete Button -->
-                                        <form action="{{ route('product.destroy', $product->id) }}" method="post"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-custom btn-sm btn-danger mt-1"
-                                                onclick="return confirm('Apakah Anda yakin ingin menghapus Product ini?')">
-                                                <i class="ti ti-trash">Delete</i>
-                                            </button>
-                                        </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -250,7 +256,8 @@
                                     <div class="mb-3">
                                         <label for="edit_Id_kbi{{ $product->id }}" class="form-label">ID KBI</label>
                                         <input type="text" class="form-control" id="edit_Id_kbi{{ $product->id }}"
-                                            name="Id_kbi" value="{{ $product->Id_kbi }}">
+                                            name="Id_kbi" value="{{ old('Id_kbi', $product->Id_kbi) }}"
+                                            placeholder="input ID KBI">
                                     </div>
 
                                     <div class="mb-3">
@@ -258,7 +265,8 @@
                                             Name</label>
                                         <input type="text" class="form-control"
                                             id="edit_Part_name{{ $product->id }}" name="Part_name"
-                                            value="{{ $product->Part_name }}">
+                                            value="{{ old('Part_name', $product->Part_name) }}"
+                                            placeholder="input part name">
                                     </div>
 
                                     <div class="mb-3">
@@ -266,13 +274,29 @@
                                             Number</label>
                                         <input type="text" class="form-control"
                                             id="edit_Part_number{{ $product->id }}" name="Part_number"
-                                            value="{{ $product->Part_number }}">
+                                            value="{{ old('Part_number', $product->Part_number) }}"
+                                            placeholder="Input part number">
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="edit_Part_number{{ $product->id }}" class="form-label">WO No</label>
+                                        <input type="text" class="form-control" id="edit_Wo_no{{ $product->id }}"
+                                            name="Wo_no" value="{{ old('Wo_no', $product->Wo_no) }}"
+                                            placeholder="Input part WO No">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="edit_Part_number{{ $product->id }}" class="form-label">Inventory
+                                            Id</label>
+                                        <input type="text" class="form-control"
+                                            id="edit_Inventory_id{{ $product->id }}" name="inventory_id"
+                                            value="{{ old('inventory_id', $product->inventory_id) }}"
+                                            placeholder="Input part Inventory Id">
+                                    </div>
+
 
                                     <div class="mb-3">
                                         <label for="edit_Qty{{ $product->id }}" class="form-label">Quantity</label>
                                         <input type="number" class="form-control" id="edit_Qty{{ $product->id }}"
-                                            name="Qty" value="{{ $product->Qty }}">
+                                            name="Qty" value="{{ old('Qty', $product->Qty) }}">
                                     </div>
                                 </div>
                                 <div class="modal-footer">

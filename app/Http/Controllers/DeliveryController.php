@@ -30,15 +30,30 @@ class DeliveryController extends Controller
     }
 
     public function uploadDelivery(Request $request)
-{
-    $request->validate([
-        'file' => 'required|mimes:xlsx,xls',
-    ]);
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+    
+        // Initialize the import class
+        $import = new DeliveryImport;
+    
+        // Perform the import
+        Excel::import($import, $request->file('file'));
+    
+        // Get the alert message from the import process
+        $alertMessage = $import->getAlertMessage();
+    
+        // Return back with alert message and success message
+        if ($alertMessage) {
+            return back()->with('alert', $alertMessage); // If there's an alert, send it back
+        }
+    
+        return back()->with('msg', 'Data delivery berhasil diupload dan stok diperbarui.');
+    }
+    
+    
 
-    Excel::import(new DeliveryImport, $request->file('file'));
-
-    return back()->with('success', 'Data delivery berhasil diupload dan stok diperbarui.');
-}
 
 
 }

@@ -19,6 +19,11 @@ class delivery extends Model
         'scandate',
         'user',
         'inventory_id_kbi',
+        'id_stock'
     ];
+    public function stock()
+    {
+        return $this->belongsTo(Stock::class, 'id_stock');
+    }
 
 }

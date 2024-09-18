@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('Id_kbi')->nullable();
             $table->unsignedBigInteger('id_produksi');
-            // $table->unsignedBigInteger('id_delivery')->nullable();
             $table->string('Part_name')->nullable();
             $table->string('Part_number')->nullable();
             $table->string('inventory_id');

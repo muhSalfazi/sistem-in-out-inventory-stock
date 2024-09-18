@@ -16,18 +16,6 @@ class ProductController extends Controller
         return view('product', ['products' => $product]);
     }
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'Inv_id' => 'required|max:255',
-            'Part_name' => 'required|max:255',
-            'Part_number' => 'required|string|max:255',
-            'Qty' => 'required|integer',
-        ]);
-
-        Produksi::create($validatedData);
-        return redirect()->route('product.index')->with('msg', 'Produksi created successfully!');
-    }
 
     public function update(Request $request, $id)
     {
@@ -36,10 +24,12 @@ class ProductController extends Controller
             'Part_name' => 'nullable|max:255',
             'Part_number' => 'nullable|string|max:255',
             'Qty' => 'sometimes|integer',
+            'Wo_no' => 'sometimes|max:255',
+            'inventory_id' => 'sometimes|integer|max:255'
         ]);
 
         $produksi = Produksi::findOrFail($id);
-        $data = $request->only(['Inv_id', 'Part_name', 'Part_number', 'Qty']);
+        $data = $request->only(['Inv_id', 'Part_name', 'Part_number', 'Qty', 'Wo_no', 'inventory_id']);
 
         foreach ($data as $key => $value) {
             if (is_null($value)) {
@@ -72,17 +62,25 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
+        // Temukan record Produksi berdasarkan ID
         $produksi = Produksi::find($id);
 
+        // Pastikan Produksi ditemukan
         if (!$produksi) {
             return redirect()->route('product.index')
                 ->with('msg', 'Produksi tidak ditemukan')
-                ->with('error', 'false');
+                ->with('error', 'true'); // Set 'true' agar error flag bisa digunakan
         }
 
+        // Hapus semua Stock terkait berdasarkan id_produksi
+        $produksi->stocks()->delete(); // Menggunakan relasi hasMany untuk menghapus semua stock terkait
+
+        // Hapus Produksi
         $produksi->delete();
-        return redirect()->route('product.index')->with('msg', 'Produksi deleted successfully!');
+
+        return redirect()->route('product.index')->with('msg', 'Produksi dan stok terkait berhasil dihapus!');
     }
+
 
     public function importExcelProduct(Request $request)
     {
@@ -90,7 +88,20 @@ class ProductController extends Controller
             'file' => 'required|mimes:xlsx,xls,csv',
         ]);
 
-        Excel::import(new ProductImport, $request->file('file'));
+        $import = new ProductImport;
+        Excel::import($import, $request->file('file'));
+
+        $alertMessages = $import->getAlertMessages();
+        $alertMessagesall = $import->getAlertMessagesall();
+
+        if (!empty($alertMessagesall)) {
+            return redirect()->back()->with('pesan', $alertMessagesall); // Return to previous page with global alerts
+        }
+
+        if (!empty($alertMessages)) {
+            return redirect()->back()->with('alerts', $alertMessages); // Return to previous page with row-specific alerts
+        }
+
         return redirect()->route('product.index')->with('msg', 'Product imported successfully!');
     }
 }

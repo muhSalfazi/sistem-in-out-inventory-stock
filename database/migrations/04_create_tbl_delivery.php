@@ -14,11 +14,18 @@ return new class extends Migration
         Schema::create('tbl_delivery', function (Blueprint $table) {
             $table->id();
             $table->integer('manifest_no');
+            $table->unsignedBigInteger('id_stock');
             $table->string('job_no_customer');
             $table->string('inventory_id_kbi')->nullable();
             $table->dateTime('scandate')->nullable();
             $table->string('user')->nullable();
             $table->timestamps();
+
+            // fk_delivery
+            $table->foreign('id_stock')
+            ->references('id')
+            ->on('tbl_stock')
+            ->onDelete('cascade');
         });
     }
 

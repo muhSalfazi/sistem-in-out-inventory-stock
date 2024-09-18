@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>KBI</title>
-  <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/favicon.png') }}" />
+  <link rel="shortcut icon" type="image/png" href="{{ asset('../assets/images/icon-kbi.png') }}" />
   <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
 </head>
 
@@ -21,9 +21,9 @@
             <div class="card mb-0">
               <div class="card-body">
                 <a href="" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                  <img src="{{ asset('assets/images/logos/dark-logo.svg') }}" width="180" alt="Logo">
+                  <img src="{{ asset('../assets/images/kyoraku-baru.png') }}" width="180" alt="Logo">
                 </a>
-                <p class="text-center">Your Social Campaigns</p>
+                <p class="text-center">PT.Kyoraku Blowmolding Indonesia</p>
                 <form action="{{ route('postlogin') }}" method="POST">
                   @csrf
                   <div class="mb-3">

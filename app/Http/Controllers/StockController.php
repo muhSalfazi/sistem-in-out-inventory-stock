@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Stock;
+use App\Models\delivery;
 use Illuminate\Http\Request;
 
 
@@ -65,16 +66,39 @@ class StockController extends Controller
     // method deletes a stock
     public function destroy($id)
     {
+        // Find the stock by its ID
         $stock = Stock::find($id);
-
+    
+        // Check if stock exists
         if (!$stock) {
             return redirect()->route('stock.index')
-                ->with('msg', 'Stok tidak di temukan')
+                ->with('msg', 'Stock not found')
                 ->with('error', 'false');
         }
+    
+        // Delete the associated production data
+        if ($stock->produksi) {
+            $stock->produksi()->delete();
+        }
+        if ($stock->deliveries) {
+            $stock->deliveries()->delete();
+        }
+    
+        // Find the related delivery by matching the first 6 digits of inventory_id_kbi with inventory_id
+        $delivery = Delivery::where('id_stock', $stock->id)->first();
+    
+        // Delete the delivery if it exists
+        if ($delivery) {
+            $delivery->delete();
+        }
+    
+        // Delete the stock itself
         $stock->delete();
+    
         return redirect()->route('stock.index')->with('msg', 'Stock deleted successfully!');
     }
+    
+    
 
 
 

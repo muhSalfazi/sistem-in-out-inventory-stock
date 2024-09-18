@@ -40,10 +40,6 @@ Route::post('/prdoduct/import', [ProductController::class, 'importExcelProduct']
 
 // Rute untuk menampilkan daftar delivery
 Route::get('/delivery', [DeliveryController::class, 'index'])->name('delivery.index');
-// Route::post('/productstore', [ProductController::class, 'store'])->name('product.store');
-// Route::put('/product/{id}', [ProductController::class, 'update'])->name('product.update');
-// Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
-// Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
 Route::post('/delivery/import', [DeliveryController::class, 'uploadDelivery'])->name('delivery.import');
 
 
@@ -52,4 +48,4 @@ Route::get('/planning', [PlanningController::class, 'index'])->name('planning.in
 Route::post('/planning/store', [PlanningController::class, 'store'])->name('planning.store');
 Route::put('/planning/update/{id}', [PlanningController::class, 'update'])->name('planning.update');
 Route::delete('/planning/delete/{id}', [PlanningController::class, 'destroy'])->name('planning.destroy');
-Route::post('/planning/import', [PlanningController::class, 'import'])->name('planning.import');
+Route::post('/planning/import', [PlanningController::class, 'importExcel'])->name('planning.import');
