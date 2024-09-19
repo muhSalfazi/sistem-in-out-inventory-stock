@@ -20,16 +20,11 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'Inv_id' => 'nullable|max:255',
-            'Part_name' => 'nullable|max:255',
-            'Part_number' => 'nullable|string|max:255',
             'Qty' => 'sometimes|integer',
-            'Wo_no' => 'sometimes|max:255',
-            'inventory_id' => 'sometimes|integer|max:255'
         ]);
 
         $produksi = Produksi::findOrFail($id);
-        $data = $request->only(['Inv_id', 'Part_name', 'Part_number', 'Qty', 'Wo_no', 'inventory_id']);
+        $data = $request->only(['Qty']);
 
         foreach ($data as $key => $value) {
             if (is_null($value)) {
@@ -47,13 +42,10 @@ class ProductController extends Controller
                 $stock->act_stock += $newQty;
                 $stock->save();
             } else {
-                Stock::create([
-                    'Inv_id' => $produksi->Inv_id,
-                    'Part_name' => $produksi->Part_name,
-                    'Part_number' => $produksi->Part_number,
-                    'act_stock' => $newQty,
-                    'id_produksi' => $produksi->id,
-                ]);
+                // Jika stok tidak ditemukan, tampilkan alert
+                return redirect()->route('product.index')
+                    ->with('msg', 'Stock tidak ditemukan untuk produksi ini.')
+                    ->with('error', true);
             }
         }
 

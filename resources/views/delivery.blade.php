@@ -82,53 +82,39 @@
                     <div class="d-flex gap-2 justify-content-md-end">
                         <div>
                             <!-- Button trigger modal -->
-                            <button class="btn btn-custom py-2 mt-1" data-bs-toggle="modal"
-                                data-bs-target="#createStockModal">
-                                <i class="ti ti-plus"></i> Created Product
+                            <button class="btn btn-excel py-2 mt-1" data-bs-toggle="modal" data-bs-target="#smallModal">
+                                <i class="bi-file-earmark-spreadsheet-fill"></i> Import Excel
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            {{-- <div class="row mb-2"> --}}
-            <div class="col-6 col-lg-2">
-                <div class="d-flex gap-2 justify-content-md-end">
-                    <div>
-                        <button class="btn btn-excel py-2 mt-1" data-bs-toggle="modal" data-bs-target="#smallModal">
-                            <i class="bi-file-earmark-spreadsheet-fill"></i> Import Excel
-                        </button>
-
-                        <div class="modal fade" id="smallModal" tabindex="-1">
-                            <div class="modal-dialog modal-sm">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Import Excel</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-
-                                    {{-- modal import --}}
-                                    <div class="modal-body">
-                                        <form action="{{ route('delivery.import') }}" method="POST"
-                                            enctype="multipart/form-data">
-                                            @csrf
-                                            <div class="mb-3">
-                                                <label for="file" class="form-label">Upload Excel File</label>
-                                                <input type="file" class="form-control" id="file" name="file"
-                                                    accept=".xlsx,.xls,.csv" required>
-                                            </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Import</button>
-                                    </div>
-                                    </form>
-                                </div>
-                            </div>
+            <div class="modal fade" id="smallModal" tabindex="-1">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Import Excel</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
-                        <!-- End Small Modal-->
 
+                        {{-- modal import --}}
+                        <div class="modal-body">
+                            <form action="{{ route('delivery.import') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="file" class="form-label">Upload Excel File</label>
+                                    <input type="file" class="form-control" id="file" name="file"
+                                        accept=".xlsx,.xls,.csv" required>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Import</button>
+                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -141,7 +127,7 @@
                             <th scope="col" class="text-center">Manifest No</th>
                             <th scope="col" class="text-center">Job No Customer</th>
                             <th scope="col" class="text-center">Inventory ID KBI</th>
-                            <th scope="col" class="text-center">Aksi</th>
+                            <th scope="col" class="text-center">Scan Date</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -152,23 +138,9 @@
                                 <td class="text-center">{{ $delivery->job_no_customer ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $delivery->inventory_id_kbi ?? 'N/A' }}</td>
                                 <td class="text-center">
-                                    <!-- Edit Button -->
-                                    <button class="btn btn-custom btn-sm mt-1 edit-part" data-bs-toggle="modal"
-                                        data-bs-target="#editStockModal">
-                                        <i class="bi bi-pen">Edit</i>
-                                    </button>
-
-                                    <!-- Delete Button -->
-                                    <form action="{{ route('product.destroy', $delivery->id) }}" method="post"
-                                        class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-custom btn-sm btn-danger mt-1"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus Product ini?')">
-                                            <i class="ti ti-trash">Delete</i>
-                                        </button>
-                                    </form>
+                                    {{ \Carbon\Carbon::parse($delivery->scandate)->format('d-m-Y H:i:s') ?? 'N/A' }}
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>
@@ -192,54 +164,6 @@
                     });
                 });
             </script>
-
-
-            <!-- Modal Create Product -->
-            <div class="modal fade" id="createStockModal" tabindex="-1" aria-labelledby="createPartModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form action="{{ route('product.store') }}" method="post">
-                            @csrf
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="createPartModalLabel">Create Product</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="InvID" class="form-label">Manifest No</label>
-                                    <input type="number" class="form-control" id="manifest_no" name="manifest_no"
-                                        placeholder="silahkan input Manifest No" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Part_name" class="form-label">Job No Customer</label>
-                                    <input type="text" class="form-control" id="job_no_customer"
-                                        name="job_no_customer" placeholder="silahkan input Job No Customer" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Part_number" class="form-label">Qty</label>
-                                    <input type="text" class="form-control" id="Qty" name="Qty"
-                                        placeholder="silahkan input Qty" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Qty" class="form-label">Quantity</label>
-                                    <input type="number" class="form-control" id="Qty" name="Qty"
-                                        placeholder="silahkan input quantity" required>
-                                </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-custom">Save</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-
-
 
 
         </div>

@@ -102,9 +102,9 @@ class ProductImport implements ToCollection, WithHeadingRow
             // Convert Excel date serial number to a Carbon date
             return Carbon::createFromFormat('Y-m-d H:i:s', gmdate('Y-m-d H:i:s', \PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp($excelDate)));
         }
-
-        // Return null if the date is not numeric
-        return null;
+    
+        // Fallback: Return the current time or any default date
+        return Carbon::now(); // Or throw an exception, based on your needs
     }
 
     public function getAlertMessagesall()

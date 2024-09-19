@@ -191,51 +191,6 @@
             </script>
 
 
-            <!-- Modal Create Product -->
-            <div class="modal fade" id="createStockModal" tabindex="-1" aria-labelledby="createPartModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form action="{{ route('product.store') }}" method="post">
-                            @csrf
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="createPartModalLabel">Create Product</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="InvID" class="form-label">InvID</label>
-                                    <input type="text" class="form-control" id="Inv_id" name="Inv_id"
-                                        placeholder="silahkan input InvID" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Part_name" class="form-label">Part Name</label>
-                                    <input type="text" class="form-control" id="Part_name" name="Part_name"
-                                        placeholder="silahkan input Part name" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Part_number" class="form-label">Part Number</label>
-                                    <input type="text" class="form-control" id="Part_number" name="Part_number"
-                                        placeholder="silahkan input part number" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Qty" class="form-label">Quantity</label>
-                                    <input type="number" class="form-control" id="Qty" name="Qty"
-                                        placeholder="silahkan input quantity" required>
-                                </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-custom">Save</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-
             <!-- Modal Edit Product -->
             @foreach ($products as $product)
                 <div class="modal fade" id="editStockModal{{ $product->id }}" tabindex="-1"
@@ -252,47 +207,6 @@
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" id="edit_id" name="id" value="{{ $product->id }}">
-
-                                    <div class="mb-3">
-                                        <label for="edit_Id_kbi{{ $product->id }}" class="form-label">ID KBI</label>
-                                        <input type="text" class="form-control" id="edit_Id_kbi{{ $product->id }}"
-                                            name="Id_kbi" value="{{ old('Id_kbi', $product->Id_kbi) }}"
-                                            placeholder="input ID KBI">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="edit_Part_name{{ $product->id }}" class="form-label">Part
-                                            Name</label>
-                                        <input type="text" class="form-control"
-                                            id="edit_Part_name{{ $product->id }}" name="Part_name"
-                                            value="{{ old('Part_name', $product->Part_name) }}"
-                                            placeholder="input part name">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="edit_Part_number{{ $product->id }}" class="form-label">Part
-                                            Number</label>
-                                        <input type="text" class="form-control"
-                                            id="edit_Part_number{{ $product->id }}" name="Part_number"
-                                            value="{{ old('Part_number', $product->Part_number) }}"
-                                            placeholder="Input part number">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="edit_Part_number{{ $product->id }}" class="form-label">WO No</label>
-                                        <input type="text" class="form-control" id="edit_Wo_no{{ $product->id }}"
-                                            name="Wo_no" value="{{ old('Wo_no', $product->Wo_no) }}"
-                                            placeholder="Input part WO No">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="edit_Part_number{{ $product->id }}" class="form-label">Inventory
-                                            Id</label>
-                                        <input type="text" class="form-control"
-                                            id="edit_Inventory_id{{ $product->id }}" name="inventory_id"
-                                            value="{{ old('inventory_id', $product->inventory_id) }}"
-                                            placeholder="Input part Inventory Id">
-                                    </div>
-
-
                                     <div class="mb-3">
                                         <label for="edit_Qty{{ $product->id }}" class="form-label">Quantity</label>
                                         <input type="number" class="form-control" id="edit_Qty{{ $product->id }}"

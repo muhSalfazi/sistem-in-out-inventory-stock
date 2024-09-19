@@ -97,7 +97,10 @@
                             <th scope="col" class="text-center">max</th>
                             <th scope="col" class="text-center">act stock</th>
                             <th scope="col" class="text-center">status</th>
+                            @if(Auth::check() && Auth::user()->role == 'admin')
+
                             <th scope="col" class="text-center">Aksi</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -121,14 +124,8 @@
                                         <span class="badge bg-secondary">Unknown</span>
                                     @endif
                                 </td>
-
+                                @if(Auth::check() && Auth::user()->role == 'admin')
                                 <td class="text-center">
-                                    <!-- Edit Button -->
-                                    {{-- <button class="btn btn-custom btn-sm mt-1 edit-part" data-id="{{ $stock->id }}"
-                                       data-bs-toggle="modal"
-                                        data-bs-target="#editStockModal">
-                                        <i class="bi bi-pen">Edit</i>
-                                    </button> --}}
 
                                     <!-- Delete Button -->
                                     <form action="{{ route('stock.destroy', $stock->id) }}" method="post"
@@ -139,6 +136,7 @@
                                             onclick="return confirm('Apakah Anda yakin ingin menghapus Stock ini?')">   <i class="ti ti-trash">Delete</i></button>
                                     </form>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

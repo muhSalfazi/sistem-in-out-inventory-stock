@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -34,7 +35,7 @@ class LoginController extends Controller
             'password' => 'required|max:255',
         ]);
 
-        // Ambil data user berdasarkan username
+        // Ambil data user berdasarkan email
         $user = User::where('email', $request->email)->first();
 
         // Cek apakah user ditemukan dan password benar
@@ -45,14 +46,23 @@ class LoginController extends Controller
             // Update waktu login terakhir
             DB::table('users')->where('id', $user->id)->update(['last_login' => now()]);
 
-            return redirect()->route('dashboard'); // Ganti dengan rute dashboard Anda
+            // Cek role pengguna dan arahkan sesuai role
+            if ($user->hasRole('admin')) {
+                return redirect()->route('dashboard'); // Redirect ke rute admin
+            } elseif ($user->hasRole('user')) {
+                return redirect()->route('user.stock.index'); // Redirect ke rute user
+            } else {
+                // Jika user tidak punya peran yang cocok, logout dan beri pesan error
+                Auth::logout();
+                return redirect()->route('login')->with('error', 'Peran Anda tidak dikenali.');
+            }
         } else {
             // Jika gagal login, kembali ke halaman login dengan pesan error
             return redirect()->route('login')
-                ->with('msg', 'Password atau kata sandi anda salah.')
-                ->with('error', true);
+                ->with('error', 'Password atau kata sandi Anda salah.');
         }
     }
+
 
     /**
      * Handle the logout request.
@@ -69,8 +79,8 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('welcome')
-            ->with('msg', 'Logout successful.')
+        return redirect()->route('login')
+            ->with('success', 'Logout successful.')
             ->with('error', false);
     }
 }

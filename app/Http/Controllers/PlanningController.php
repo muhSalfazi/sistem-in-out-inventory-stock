@@ -7,6 +7,7 @@ use App\Models\Planning;
 use App\Models\Stock;
 use App\Imports\PlanningImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class PlanningController extends Controller
 {
@@ -112,6 +113,9 @@ class PlanningController extends Controller
     // method delete planning
     public function destroy($id)
     {
+        if (Auth::user()->role !== 'user') {
+            return redirect()->route('admin.planning.index')->with('error', 'Anda tidak memiliki izin untuk menghapus planning.');
+        }
         $planning = Planning::findOrFail($id);
 
         // Find the corresponding stock entry
@@ -132,7 +136,7 @@ class PlanningController extends Controller
         // Delete the planning entry
         $planning->delete();
 
-        return redirect()->route('planning.index')->with('msg', 'Planning and related stock values updated successfully.');
+        return redirect()->route('user.planning.index')->with('msg', 'Planning and related stock values updated successfully.');
     }
     
     // method import excel

@@ -11,7 +11,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         // Membuat admin pertama
-        User::create([
+        user::create([
             'first_name' => 'jonn',
             'last_name' => 'udin',
             'email' => 'admin@mail.com',
@@ -25,6 +25,8 @@ class UserSeeder extends Seeder
             'last_name' => 'santoso',
             'email' => 'user@mail.com',
             'password' => Hash::make('user'),
+            'role' => 'user',
+
         ]);
     }
 }

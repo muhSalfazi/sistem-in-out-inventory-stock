@@ -6,6 +6,7 @@ use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,33 +20,45 @@ use App\Http\Controllers\DeliveryController;
 */
 
 
-Route::get('/', [LoginController::class, 'showLogin'])->name('login'); 
+Route::get('/', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('postlogin');
 
+Route::group(['middleware' => ['role:admin']], function () {
 
-// Rute untuk menampilkan daftar stock
-Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
-Route::put('/stock/{id}', [StockController::class, 'update'])->name('stock.update');
-Route::delete('/stock/{id}', [StockController::class, 'destroy'])->name('stock.destroy');
-// Route::post('/stock/import', [StockController::class, 'importExcel'])->name('stock.import');
+  // routes dashboard
+  Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Rute untuk menampilkan daftar produksi
-Route::get('/product', [ProductController::class, 'index'])->name('product.index');
-Route::post('/productstore', [ProductController::class, 'store'])->name('product.store');
-Route::put('/product/{id}', [ProductController::class, 'update'])->name('product.update');
-Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
-Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
-Route::post('/prdoduct/import', [ProductController::class, 'importExcelProduct'])->name('product.import');
+  // route untuk stock
+   Route::get('/admin/stock', [StockController::class, 'index'])->name('admin.stock.index');
+  Route::delete('/stock/{id}', [StockController::class, 'destroy'])->name('stock.destroy');
+
+  // Rute untuk menampilkan daftar delivery
+  Route::get('/delivery', [DeliveryController::class, 'index'])->name('delivery.index');
+  Route::post('/delivery/import', [DeliveryController::class, 'uploadDelivery'])->name('delivery.import');
+  // Rute untuk menampilkan daftar produksi
+  Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+  Route::post('/productstore', [ProductController::class, 'store'])->name('product.store');
+  Route::put('/product/{id}', [ProductController::class, 'update'])->name('product.update');
+  Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
+  Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
+  Route::post('/prdoduct/import', [ProductController::class, 'importExcelProduct'])->name('product.import');
+});
+
+// Route::get('/stocks', [StockController::class, 'getStocks'])->name('user.stock.getStocks');
+// Route::get('/stock', [StockController::class, 'index'])->middleware('role:admin,user')->name('stock.index');
+// Middleware untuk user
+Route::group(['middleware' => ['role:user']], function () {
+  // route show data stok
+  Route::get('user/stock', [StockController::class, 'index'])->name('user.stock.index');
 
 
-// Rute untuk menampilkan daftar delivery
-Route::get('/delivery', [DeliveryController::class, 'index'])->name('delivery.index');
-Route::post('/delivery/import', [DeliveryController::class, 'uploadDelivery'])->name('delivery.import');
+  Route::get('user/planning', [PlanningController::class, 'index'])->name('user.planning.index');
+  Route::post('/planning/store', [PlanningController::class, 'store'])->name('planning.store');
+  Route::put('/planning/update/{id}', [PlanningController::class, 'update'])->name('planning.update');
+  Route::post('/planning/import', [PlanningController::class, 'importExcel'])->name('planning.import');
+  Route::delete('/planning/delete/{id}', [PlanningController::class, 'destroy'])->name('planning.destroy');
 
+});
 
-// planning
-Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
-Route::post('/planning/store', [PlanningController::class, 'store'])->name('planning.store');
-Route::put('/planning/update/{id}', [PlanningController::class, 'update'])->name('planning.update');
-Route::delete('/planning/delete/{id}', [PlanningController::class, 'destroy'])->name('planning.destroy');
-Route::post('/planning/import', [PlanningController::class, 'importExcel'])->name('planning.import');
+// Route umum (tanpa middleware)
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');

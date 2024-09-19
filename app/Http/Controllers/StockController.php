@@ -5,18 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Stock;
 use App\Models\delivery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class StockController extends Controller
 {
-
-    // method view stock a stock
     public function index()
-    {
+    { // Ambil semua data stok
         $stocks = Stock::all();
+    
+        // Jika request-nya datang dari AJAX, kirim data JSON
+        if (request()->ajax()) {
+            return response()->json($stocks);
+        }
+    
+        // Jika bukan AJAX, tampilkan view
         return view('stock', ['stocks' => $stocks]);
     }
-
+    
+    
 
     // method update as a stock
     public function update(Request $request, $id)
@@ -66,6 +73,10 @@ class StockController extends Controller
     // method deletes a stock
     public function destroy($id)
     {
+         // Cek apakah pengguna adalah admin
+    if (Auth::user()->role !== 'admin') {
+        return redirect()->route('admin.stock.index')->with('error', 'Anda tidak memiliki izin untuk menghapus stok.');
+    }
         // Find the stock by its ID
         $stock = Stock::find($id);
     
