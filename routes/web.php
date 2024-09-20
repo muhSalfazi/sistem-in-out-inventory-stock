@@ -19,9 +19,10 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
+Route::get('/', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'login'])->name('postlogin')->middleware('guest');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/', [LoginController::class, 'showLogin'])->name('login');
-Route::post('/login', [LoginController::class, 'login'])->name('postlogin');
 
 Route::group(['middleware' => ['role:admin']], function () {
 
@@ -60,5 +61,3 @@ Route::group(['middleware' => ['role:user']], function () {
 
 });
 
-// Route umum (tanpa middleware)
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');

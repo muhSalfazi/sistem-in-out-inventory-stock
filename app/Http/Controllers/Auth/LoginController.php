@@ -77,10 +77,18 @@ class LoginController extends Controller
 
         // Invalidate session
         $request->session()->invalidate();
+
+        // Regenerate token
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')
-            ->with('success', 'Logout successful.')
+        // Hapus cache agar tidak bisa kembali ke halaman sebelumnya
+        $response = redirect()->route('login')->with('success', 'Logout berhasil.')
             ->with('error', false);
+
+        $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+        $response->headers->set('Pragma', 'no-cache');
+        $response->headers->set('Expires', 'Fri, 01 Jan 1990 00:00:00 GMT');
+
+        return $response;
     }
 }
