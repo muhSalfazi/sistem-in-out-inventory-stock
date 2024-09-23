@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('manifest_no');
             $table->unsignedBigInteger('id_stock');
-            $table->string('job_no_customer');
+            $table->string('job_no_customer')->nullable();
             $table->string('inventory_id_kbi')->nullable();
             $table->dateTime('scandate')->nullable();
             $table->string('user')->nullable();

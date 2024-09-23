@@ -57,7 +57,7 @@
         }
 
         .stat-box {
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
             transition: background-color 0.3s ease, transform 0.3s ease;
@@ -233,6 +233,41 @@
             font-size: 1.25rem;
         }
     </style>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    
+    function updateDashboard() {
+        $.ajax({
+            url: '{{ route("dashboard.data") }}',
+            method: 'GET',
+            success: function(data) {
+                $('#produksiThisMonth').text(data.produksiThisMonth);
+                $('#produksiToday').text(data.produksiToday);
+                $('#deliveryToday').text(data.deliveryToday);
+                $('#produksiLastMonth').text(data.produksiLastMonth);
+                
+                // Update chart with new data
+                renderChart(data.produksiThisMonth, data.produksiLastMonth);
+            },
+            error: function(err) {
+                console.error('Error fetching data:', err);
+            }
+        });
+    }
+
+    // Call updateDashboard every 5 seconds
+    setInterval(updateDashboard, 5000);
+
+    // Initial render of the chart
+    $(document).ready(function() {
+        renderChart({{ $produksiThisMonth }}, {{ $produksiLastMonth }});
+        document.getElementById('produksiToday').textContent = {!! json_encode($produksiToday) !!};
+        document.getElementById('deliveryToday').textContent = {!! json_encode($deliveryToday) !!};
+    });
+</script>
+
+
     <script>
         var produksiToday = {!! json_encode($produksiToday) !!};
         var deliveryToday = {!! json_encode($deliveryToday) !!};
@@ -250,6 +285,8 @@
             document.getElementById('deliveryToday').textContent = deliveryToday;
         });
     </script>
+
+
     <div class="container-fluid">
         <div class="col-12">
             <div class="card bounce-in">
@@ -259,7 +296,7 @@
                 <div class="card-body">
                     <div class="row text-center">
                         <div class="col-6 col-md-6">
-                            <div class="stat-box bg-success pulse" onclick="window.location.href='/produksi'">
+                            <div class="stat-box bg-success pulse" onclick="window.location.href='/product'">
                                 <h4 class="text-white"><b>Product</b></h4>
                                 <h3 id="produksiToday" class="stat-number">0</h3>
                             </div>
@@ -296,14 +333,16 @@
                             <!-- Yearly Breakup -->
                             <div class="card overflow-hidden">
                                 <div class="card-body p-4">
-                                    <h5 class="card-title mb-9 fw-semibold">Produksi </h5>
+                                    <h5 class="card-title mb-9 fw-semibold">Produksi</h5>
                                     <div class="row align-items-center">
                                         <div class="col-8">
-                                            <h4 class="fw-semibold mb-3"><i class="bi bi-clipboard2-pulse">
-                                                    {{ $produksiThisMonth }}</i></h4>
+                                            <h4 class="fw-semibold mb-3">
+                                                <i class="bi bi-clipboard2-pulse" >
+                                                    {{ $produksiThisMonth }}
+                                                </i>
+                                            </h4>
                                             <div class="d-flex align-items-center mb-3">
-                                                <span
-                                                    class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
+                                                <span class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
                                                     <i class="ti ti-arrow-up-left text-success"></i>
                                                 </span>
                                                 <p class="text-dark me-1 fs-3 mb-0">{{ $persentaseKenaikan }}%</p>
@@ -311,19 +350,13 @@
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 <div class="me-4">
-                                                    <span
-                                                        class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
+                                                    <span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
                                                     <span class="fs-2">{{ date('F Y') }}</span>
-                                                    <!-- Bulan dan tahun sekarang -->
                                                 </div>
                                                 <div>
-                                                    <span
-                                                        class="round-8 bg-light-primary rounded-circle me-2 d-inline-block"></span>
+                                                    <span class="round-8 bg-light-primary rounded-circle me-2 d-inline-block"></span>
                                                     <span class="fs-2">{{ date('F Y', strtotime('-1 month')) }}</span>
-                                                    <!-- Bulan dan tahun bulan lalu -->
                                                 </div>
-
-
                                             </div>
                                         </div>
                                         <div class="col-4">
@@ -334,6 +367,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
                         <div class="col-lg-12">
                             <!-- Monthly Earnings -->

@@ -146,6 +146,7 @@
                             <th scope="col" class="text-center">Inventory ID</th>
                             <th scope="col" class="text-center">Line</th>
                             <th scope="col" class="text-center">Qty</th>
+                            <th scope="col" class="text-center">Waktu</th>
                             <th scope="col" class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -160,6 +161,7 @@
                                 <td class="text-center">{{ $product->inventory_id ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $product->line ?? 'N/A' }}</td>
                                 <td class="text-center">{{ $product->Qty ?? 'N/A' }}</td>
+                                <td class="text-center">{{ \Carbon\Carbon::parse($product->waktu)->format('d-m-Y H:i:s') ?? 'N/A' }}</td>
                                 <td class="text-center">
                                     <!-- Edit Button -->
                                     <button class="btn btn-custom btn-sm mt-1" data-bs-toggle="modal"

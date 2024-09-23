@@ -121,4 +121,34 @@ class DashboardController extends Controller
 
         return $weeklyData;
     }
+
+    public function fetchDashboardData()
+{
+    $produksiToday = Produksi::whereDate('waktu', Carbon::today())->sum('Qty');
+    $deliveryToday = Delivery::whereDate('scandate', today())->count();
+
+    $currentMonth = date('m');
+    $currentYear = date('Y');
+    
+    $produksiThisMonth = Produksi::whereYear('waktu', $currentYear)
+        ->whereMonth('waktu', $currentMonth)
+        ->sum('Qty');
+
+    $produksiLastMonth = Produksi::whereYear('waktu', $currentYear)
+        ->whereMonth('waktu', Carbon::now()->subMonth()->month)
+        ->sum('Qty');
+
+    $deliveryCounts = $this->getMonthlyDeliveryCounts($currentMonth, $currentYear);
+    $weeklyDeliveryData = $this->getWeeklyDeliveryCounts($currentMonth, $currentYear);
+
+    return response()->json([
+        'produksiToday' => $produksiToday,
+        'deliveryToday' => $deliveryToday,
+        'produksiThisMonth' => $produksiThisMonth,
+        'produksiLastMonth' => $produksiLastMonth,
+        'deliveryCounts' => $deliveryCounts,
+        'weeklyDeliveryData' => $weeklyDeliveryData,
+    ]);
+}
+
 }

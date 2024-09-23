@@ -41,7 +41,7 @@ class ProductImport implements ToCollection, WithHeadingRow
 
                 if ($produksi) {
                     // Jika sudah ada, update qty dan stok
-                    $produksi->Qty += $row['qty'];
+                    // $produksi->Qty += $row['qty'];
                     $produksi->save();
 
                     // Update tabel stock
@@ -50,6 +50,18 @@ class ProductImport implements ToCollection, WithHeadingRow
                         $stock->act_stock += $row['qty'];
                         $stock->status = null; // Correctly set status to null
                         $stock->save();
+
+                        $stock = Produksi::create([
+                            'Id_kbi' => $row['id_kbi'],
+                            'Part_name' => $row['part_name'],
+                            'Part_number' => $row['part_no'],
+                            'Qty' => $row['qty'],
+                            'wo_no' => $row['wo_no'],
+                            'inventory_id' => $row['inventory_id'],
+                            'line' => $row['line'],
+                            'waktu' => $waktu,
+                            'user' => $row['user'],
+                        ]);
                     }
                 } else {
                     // Jika belum ada, buat record baru di Produksi dan Stock

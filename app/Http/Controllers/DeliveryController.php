@@ -32,7 +32,7 @@ class DeliveryController extends Controller
     public function uploadDelivery(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:xlsx,xls',
+            'file' => 'required',
         ]);
     
         // Initialize the import class
